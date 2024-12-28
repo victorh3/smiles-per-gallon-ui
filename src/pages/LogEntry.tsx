@@ -49,9 +49,6 @@ const LogEntry: React.FC = () => {
           "https://smiles-per-gallon-api.vercel.app/create",
           {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
             body: JSON.stringify({
               date: logEntry.date?.toISOString(),
               mileage: Number(logEntry.mileage),
