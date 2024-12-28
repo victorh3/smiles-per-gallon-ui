@@ -4,13 +4,17 @@ import {
   Typography,
   Box,
   CircularProgress,
-  List,
-  ListItem,
-  ListItemText,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 
 interface Entry {
-  id: number;
+  _id: number;
   date: string;
   mileage: number;
   gallons: number;
@@ -24,7 +28,9 @@ const SmilesPerGallon: React.FC = () => {
   useEffect(() => {
     const fetchEntries = async () => {
       try {
-        const response = await fetch("https://api.example.com/entries");
+        const response = await fetch(
+          "https://smiles-per-gallon-api.vercel.app/all-entries"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch entries");
         }
@@ -68,16 +74,45 @@ const SmilesPerGallon: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Historical Entries
       </Typography>
-      <List>
-        {entries.map((entry) => (
-          <ListItem key={entry.id}>
-            <ListItemText
-              primary={`Date: ${entry.date}`}
-              secondary={`Mileage: ${entry.mileage}, Gallons: ${entry.gallons}`}
-            />
-          </ListItem>
-        ))}
-      </List>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Gallons Filled</TableCell>
+              <TableCell>Mileage</TableCell>
+              <TableCell>MPG</TableCell>
+              <TableCell>Difference</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {entries.map((entry, index) => {
+              return (
+                <TableRow key={entry._id}>
+                  <TableCell>{entry.date}</TableCell>
+                  <TableCell>{entry.gallons}</TableCell>
+                  <TableCell>{entry.mileage}</TableCell>
+                  <TableCell>
+                    {index > 0
+                      ? (entries[index].mileage - entries[index - 1].mileage) /
+                        entries[index].gallons
+                      : ""}
+                  </TableCell>
+                  <TableCell>
+                    {index > 1
+                      ? (entries[index].mileage - entries[index - 1].mileage) /
+                          entries[index].gallons -
+                        (entries[index - 1].mileage -
+                          entries[index - 2].mileage) /
+                          entries[index - 1].gallons
+                      : ""}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   );
 };
