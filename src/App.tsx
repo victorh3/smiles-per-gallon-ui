@@ -11,7 +11,7 @@ function App() {
     <>
       <CssBaseline />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Router>
+        <Router basename="/smiles-per-gallon-ui">
           <Layout>
             <Routes>
               <Route path="/" element={<Home />} />
