@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button } from "@mui/material";
+import { Alert, Box, TextField, Button } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
 
@@ -10,19 +10,27 @@ interface LogEntryState {
   password: string;
 }
 
+const defaultState: LogEntryState = {
+  date: dayjs(),
+  mileage: "",
+  gallons: "",
+  password: "",
+};
+
 const LogEntry: React.FC = () => {
-  const [logEntry, setLogEntry] = useState<LogEntryState>({
-    date: dayjs(),
-    mileage: "",
-    gallons: "",
-    password: "",
-  });
+  const [logEntry, setLogEntry] = useState<LogEntryState>(defaultState);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const handleDateChange = (date: Dayjs | null) => {
     setLogEntry((prev) => ({
       ...prev,
       date: date,
     }));
+  };
+
+  const resetState = () => {
+    setLogEntry(defaultState);
+    setAlertMessage(null);
   };
 
   const handleInputChange = (
@@ -38,9 +46,11 @@ const LogEntry: React.FC = () => {
   const handleAddEntry = async () => {
     // Handle log entry logic here
     if (logEntry.password !== import.meta.env.VITE_ENTRY_PASSWORD) {
+      setAlertMessage("Incorrect password");
       console.error("Incorrect password");
       return;
     } else if (!logEntry.date || !logEntry.mileage || !logEntry.gallons) {
+      setAlertMessage("Missing required fields");
       console.error("Missing required fields");
       return;
     } else {
@@ -63,8 +73,10 @@ const LogEntry: React.FC = () => {
 
         const data = await response.json();
         console.log("Entry added successfully:", data);
+        resetState();
       } catch (error) {
         console.error("Error adding entry:", error);
+        setAlertMessage("Failed to add entry. Please try again.");
       }
     }
   };
@@ -103,6 +115,11 @@ const LogEntry: React.FC = () => {
         value={logEntry.password}
         onChange={(e) => handleInputChange(e, "password")}
       />
+      {alertMessage && (
+        <Box my={2}>
+          <Alert severity="error">{alertMessage}</Alert>
+        </Box>
+      )}
       <Button
         variant="contained"
         color="primary"
