@@ -12,7 +12,7 @@ export default function Layout({ children }: LayoutProps) {
     <>
       <Header />
       <main>
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <Box display="flex" flexDirection="column" alignItems="center" mt={8}>
             {children}
           </Box>

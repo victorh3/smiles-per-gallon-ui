@@ -81,6 +81,7 @@ const SmilesPerGallon: React.FC = () => {
               <TableCell>Date</TableCell>
               <TableCell>Gallons Filled</TableCell>
               <TableCell>Mileage</TableCell>
+              <TableCell>Mileage Difference</TableCell>
               <TableCell>MPG</TableCell>
               <TableCell>Difference</TableCell>
             </TableRow>
@@ -94,8 +95,16 @@ const SmilesPerGallon: React.FC = () => {
                   <TableCell>{entry.mileage}</TableCell>
                   <TableCell>
                     {index > 0
-                      ? (entries[index].mileage - entries[index - 1].mileage) /
-                        entries[index].gallons
+                      ? entries[index].mileage - entries[index - 1].mileage
+                      : ""}
+                  </TableCell>
+                  <TableCell>
+                    {index > 0
+                      ? (
+                          (entries[index].mileage -
+                            entries[index - 1].mileage) /
+                          entries[index].gallons
+                        ).toFixed(2)
                       : ""}
                   </TableCell>
                   <TableCell>

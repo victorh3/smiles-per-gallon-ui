@@ -97,7 +97,7 @@ const LogEntry: React.FC = () => {
         variant="outlined"
         fullWidth
         margin="normal"
-        type="number"
+        slotProps={{ input: { type: "number" } }}
         value={logEntry.mileage}
         onChange={(e) => handleInputChange(e, "mileage")}
       />
@@ -106,7 +106,7 @@ const LogEntry: React.FC = () => {
         variant="outlined"
         fullWidth
         margin="normal"
-        type="number"
+        slotProps={{ input: { type: "number" } }}
         value={logEntry.gallons}
         onChange={(e) => handleInputChange(e, "gallons")}
       />
@@ -115,7 +115,7 @@ const LogEntry: React.FC = () => {
         variant="outlined"
         fullWidth
         margin="normal"
-        type="password"
+        slotProps={{ input: { type: "password" } }}
         value={logEntry.password}
         onChange={(e) => handleInputChange(e, "password")}
       />
